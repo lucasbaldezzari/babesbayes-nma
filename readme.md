@@ -10,7 +10,7 @@ This repo will be use to store and mantain the codes for the project *Bayes Babe
 - Seohee Han
 - Andrew Richmond
 - Chloe Kindell
-- Miranda
+- Miranda Gonzales
 - Lucas Baldezzari
 
 ### Docs
