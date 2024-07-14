@@ -17,3 +17,13 @@ def getSubjecBasicStats(data, subjectID, interest_columns):
   # data_filtered = data.loc[filter]
 
   # return data_filtered[interest_columns].describe()
+
+
+def getAngles(x,y):
+  """
+  - x: array with the x values in cartesian coordinates
+  - y: array with the y values in cartesian coordinates
+
+  return: array with the angles in degrees
+  """
+  return np.arctan2(y, x) * 180 / np.pi
