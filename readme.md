@@ -19,3 +19,5 @@ This repo will be use to store and mantain the codes for the project *Bayes Babe
 
 ### Biblio
 - [Laquitaine & Gardner, Neuron, 2018 - *A Switching Observer for Human Perceptual Estimation*](https://pubmed.ncbi.nlm.nih.gov/29290551/)
+- [Hidden Markov Model in Machine learning](https://www.geeksforgeeks.org/hidden-markov-model-in-machine-learning/)
+- [Hidden Markov Models of Evidence Accumulation in Speeded Decision Tasks](https://link.springer.com/article/10.1007/s42113-021-00115-0)
