@@ -16,6 +16,7 @@ This repo will be use to store and mantain the codes for the project *Bayes Babe
 ### Docs
 
 - [Project Group 2 Main doc](https://docs.google.com/document/d/1ZA0-Z-GO-pYg_CeYRGAYFPBJxr1fF4K0PAReS_vPJt0/edit)
+- [Potential Proposal](https://docs.google.com/document/d/1DL2T97BWogI5rgF8SQ9WpetcekPW66ra6XHvEVreN34/edit#heading=h.qw2lglpsn6er)
 
 ### Biblio
 - [Laquitaine & Gardner, Neuron, 2018 - *A Switching Observer for Human Perceptual Estimation*](https://pubmed.ncbi.nlm.nih.gov/29290551/)
