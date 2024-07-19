@@ -37,7 +37,7 @@ def limitingAngles(angles, bottom=-180, top=180):
     """
     return (angles + 180) % 360 - 180
 
-def gettingDiffAnglesRate(diff_angles, trials_window = 20):
+def gettingDiffAnglesRate(dataframe, trials_window = 20):
     """
     We get the diff_angles array and average the values in a window of trials_window
 
