@@ -19,11 +19,62 @@ def getSubjecBasicStats(data, subjectID, interest_columns):
   # return data_filtered[interest_columns].describe()
 
 
-def getAngles(x,y):
+def getAngles(x,y, limits = 360):
   """
   - x: array with the x values in cartesian coordinates
   - y: array with the y values in cartesian coordinates
+  - limits: int with the limits to convert the angles
 
   return: array with the angles in degrees
   """
-  return np.arctan2(y, x) * 180 / np.pi
+  return (np.arctan2(y, x) * 180 / np.pi) % limits
+
+def limitingAngles(angles, bottom=-180, top=180):
+    """
+    Angles: Array with the angles between 0 and 359 degrees
+    
+    The idea is to transfrom the angles between bottom and top degrees
+    """
+    return (angles + 180) % 360 - 180
+
+##Liquitaine function
+def get_cartesian_to_deg(
+    x: np.ndarray, y: np.ndarray, signed: bool
+) -> np.ndarray:
+    """convert cartesian coordinates to
+    angles in degree
+    Args:
+        x (np.ndarray): x coordinate
+        y (np.ndarray): y coordinate
+        signed (boolean): True (signed) or False (unsigned)
+    Usage:
+        .. code-block:: python
+            import numpy as np
+            from bsfit.nodes.cirpy.utils import get_cartesian_to_deg
+            x = np.array([1, 0, -1, 0])
+            y = np.array([0, 1, 0, -1])
+            degree = get_cartesian_to_deg(x,y,False)
+            # Out: array([  0.,  90., 180., 270.])
+    Returns:
+        np.ndarray: angles in degree
+    """
+    # convert to radian (ignoring divide by 0 warning)
+    with np.errstate(divide="ignore"):
+        degree = np.arctan(y / x)
+
+    # convert to degree and adjust based
+    # on quadrant
+    for ix in range(len(x)):
+        if (x[ix] >= 0) and (y[ix] >= 0):
+            degree[ix] = degree[ix] * 180 / np.pi
+        elif (x[ix] == 0) and (y[ix] == 0):
+            degree[ix] = 0
+        elif x[ix] < 0:
+            degree[ix] = degree[ix] * 180 / np.pi + 180
+        elif (x[ix] >= 0) and (y[ix] < 0):
+            degree[ix] = degree[ix] * 180 / np.pi + 360
+
+    # if needed, convert signed to unsigned
+    if not signed:
+        degree[degree < 0] = degree[degree < 0] + 360
+    return degree
