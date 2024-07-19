@@ -37,6 +37,25 @@ def limitingAngles(angles, bottom=-180, top=180):
     """
     return (angles + 180) % 360 - 180
 
+def gettingDiffAnglesRate(diff_angles, trials_window = 20):
+    """
+    We get the diff_angles array and average the values in a window of trials_window
+
+    Args:
+    - diff_angles: array with the diff_angles
+    - trials_window: int with the number of trials to average
+    """
+
+    ##getting the length of the array
+    length = len(diff_angles)
+    ##getting the number of windows
+    windows = length//trials_window
+    ##getting the diff_angles rate
+    diff_angles_rate = np.zeros(windows)
+    for i in range(windows):
+        diff_angles_rate[i] = np.mean(diff_angles[i*trials_window:(i+1)*trials_window])
+    return diff_angles_rate
+
 ##Liquitaine function
 def get_cartesian_to_deg(
     x: np.ndarray, y: np.ndarray, signed: bool
