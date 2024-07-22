@@ -37,24 +37,81 @@ def limitingAngles(angles, bottom=-180, top=180):
     """
     return (angles + 180) % 360 - 180
 
-def gettingDiffAnglesRate(dataframe, trials_window = 20):
+def gettingMADiffAngles(dataframe, trials_window = 10, divided_by = None,
+                        replace_nan = "mean"):
     """
-    We get the diff_angles array and average the values in a window of trials_window
+    Getting the moving average of the diff_angles
 
     Args:
-    - diff_angles: array with the diff_angles
+    - dataframe: dataframe with the data
     - trials_window: int with the number of trials to average
     """
+    ##getting the MA for each subjetc_id and rund_id over the trials (trial_index column) using the diff_angles column
+    ##save the data in a dictionary with keys as (subject_id, run_id)
 
-    ##getting the length of the array
-    length = len(diff_angles)
-    ##getting the number of windows
-    windows = length//trials_window
-    ##getting the diff_angles rate
-    diff_angles_rate = np.zeros(windows)
-    for i in range(windows):
-        diff_angles_rate[i] = np.mean(diff_angles[i*trials_window:(i+1)*trials_window])
-    return diff_angles_rate
+    ##divided_by should be None, or "motion_coherence" or "prior_std", if not, raise and value error
+    if divided_by not in [None, "motion_coherence", "prior_std"]:
+        raise ValueError("divided_by should be None, 'motion_coherence' or 'prior_std'")
+    
+    ##replace_nan should be "mean" or "zero", if not, raise and value error
+    if replace_nan not in ["mean", "zero"]:
+        raise ValueError("replace_nan should be 'mean' or 'zero'")
+
+    if divided_by is None:
+        ma_diff_angles = {}
+        for subjetc_id in dataframe["subject_id"].unique():
+            for run_id in dataframe["run_id"].unique():
+                filter = (dataframe["subject_id"] == subjetc_id) & (dataframe["run_id"] == run_id)
+                ma_diff_angles[(subjetc_id, run_id)] = dataframe.loc[filter, "diff_angles"].rolling(trials_window).mean()
+                ##replace nan
+                if replace_nan == "mean":
+                    ma_diff_angles[(subjetc_id, run_id)] = ma_diff_angles[(subjetc_id, run_id)].fillna(ma_diff_angles[(subjetc_id, run_id)].mean())
+                if replace_nan == "zero":
+                    ma_diff_angles[(subjetc_id, run_id)] = ma_diff_angles[(subjetc_id, run_id)].fillna(0)
+                #reset the index
+                ma_diff_angles[(subjetc_id, run_id)] = ma_diff_angles[(subjetc_id, run_id)].reset_index(drop=True)
+
+        return ma_diff_angles
+    
+    elif divided_by == "motion_coherence":
+        ##getting the MA for each subjetc_id and rund_id over the trials (trial_index column)
+        ## using the diff_angles column
+        ##save the data in a dictionary with keys as (subject_id, run_id, motion_coherence)
+        ma_diff_angles = {}
+        for subjetc_id in dataframe["subject_id"].unique():
+            for run_id in dataframe["run_id"].unique():
+                for motion_coherence in dataframe["motion_coherence"].unique():
+                    filter = (dataframe["subject_id"] == subjetc_id) & (dataframe["run_id"] == run_id) & (dataframe["motion_coherence"] == motion_coherence)
+                    ma_diff_angles[(subjetc_id, run_id, motion_coherence)] = dataframe.loc[filter, "diff_angles"].rolling(trials_window).mean()
+                    ##replace nan
+                    if replace_nan == "mean":
+                        ma_diff_angles[(subjetc_id, run_id, motion_coherence)] = ma_diff_angles[(subjetc_id, run_id, motion_coherence)].fillna(ma_diff_angles[(subjetc_id, run_id, motion_coherence)].mean())
+                    if replace_nan == "zero":
+                        ma_diff_angles[(subjetc_id, run_id, motion_coherence)] = ma_diff_angles[(subjetc_id, run_id, motion_coherence)].fillna(0)
+                    #reset the index
+                    ma_diff_angles[(subjetc_id, run_id, motion_coherence)] = ma_diff_angles[(subjetc_id, run_id, motion_coherence)].reset_index(drop=True)
+
+        return ma_diff_angles
+    
+    elif divided_by == "prior_std":
+        ##getting the MA for each subjetc_id and rund_id over the trials (trial_index column)
+        ## using the diff_angles column
+        ##save the data in a dictionary with keys as (subject_id, run_id, prior_std)
+        ma_diff_angles = {}
+        for subjetc_id in dataframe["subject_id"].unique():
+            for run_id in dataframe["run_id"].unique():
+                for prior_std in dataframe["prior_std"].unique():
+                    filter = (dataframe["subject_id"] == subjetc_id) & (dataframe["run_id"] == run_id) & (dataframe["prior_std"] == prior_std)
+                    ma_diff_angles[(subjetc_id, run_id, prior_std)] = dataframe.loc[filter, "diff_angles"].rolling(trials_window).mean()
+                    ##replace nan with
+                    if replace_nan == "mean":
+                        ma_diff_angles[(subjetc_id, run_id, prior_std)] = ma_diff_angles[(subjetc_id, run_id, prior_std)].fillna(ma_diff_angles[(subjetc_id, run_id, prior_std)].mean())
+                    if replace_nan == "zero":
+                        ma_diff_angles[(subjetc_id, run_id, prior_std)] = ma_diff_angles[(subjetc_id, run_id, prior_std)].fillna(0)
+                    ##reset the index
+                    ma_diff_angles[(subjetc_id, run_id, prior_std)] = ma_diff_angles[(subjetc_id, run_id, prior_std)].reset_index(drop=True)
+
+        return ma_diff_angles
 
 ##Liquitaine function
 def get_cartesian_to_deg(
