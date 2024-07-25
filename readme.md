@@ -18,6 +18,7 @@ This repo will be use to store and mantain the codes for the project *Bayes Babe
 - [Project Group 2 Main doc](https://docs.google.com/document/d/1ZA0-Z-GO-pYg_CeYRGAYFPBJxr1fF4K0PAReS_vPJt0/edit)
 - [Potential Proposal](https://docs.google.com/document/d/1DL2T97BWogI5rgF8SQ9WpetcekPW66ra6XHvEVreN34/edit#heading=h.qw2lglpsn6er)
 - [Neural Model of the swtiching observer model Arjun Doc](https://docs.google.com/document/d/1WE8VspE0nJoXH54ET8YFkZmJXTj3S4NjSuUDtu1c4BI/edit)
+- [Slides presentation](https://docs.google.com/presentation/d/1jy7FQxSmfsh-nDtU8quLWIYfUyyUcKUThjP8q5fMFjY/edit#slide=id.g2ee1bff03f1_1_12)
 
 ### Biblio
 - [Laquitaine & Gardner, Neuron, 2018 - *A Switching Observer for Human Perceptual Estimation*](https://pubmed.ncbi.nlm.nih.gov/29290551/)
